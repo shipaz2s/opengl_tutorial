@@ -91,7 +91,7 @@ int main()
 	Shader lightShader("part_5/light.vs", "part_5/light.fs");
 	Shader cubeShader("part_5/cube.vs", "part_5/cube.fs");
 
-	glm::vec3 lightPos(1.2f, 2.0f, 2.0f);
+	glm::vec3 lightPos(0.5f, 0.0f, 2.0f);
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window))
@@ -121,9 +121,18 @@ int main()
 		glm::mat4 model = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(cubeShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
-		glUniform3fv( glGetUniformLocation(cubeShader.Program, "objectColor"), 1, glm::value_ptr( glm::vec3(1.0f, 0.5f, 0.31f) ) );
-		glUniform3fv( glGetUniformLocation(cubeShader.Program, "lightColor"), 1, glm::value_ptr( glm::vec3(1.0f, 1.0f, 1.0f) ) );
-		glUniform3fv( glGetUniformLocation(cubeShader.Program, "lightPos"), 1, glm::value_ptr( lightPos ) );
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "material.color"), 1, glm::value_ptr( glm::vec3(1.0f, 0.5f, 0.31f) ) );
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "material.ambient"), 1, glm::value_ptr( glm::vec3(0.19225f, 0.19225f, 0.19225f) ) );
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "material.diffuse"), 1, glm::value_ptr( glm::vec3(0.50754f, 0.50754f, 0.50754f) ) );
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "material.specular"), 1, glm::value_ptr( glm::vec3(0.508273f, 0.508273f, 0.508273f) ) );
+		glUniform1f( glGetUniformLocation(cubeShader.Program, "material.shininess"), 0.4f * 128.0f);
+
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "light.color"), 1, glm::value_ptr( glm::vec3(1.0f, 1.0f, 1.0f) ) );
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "light.position"), 1, glm::value_ptr( lightPos ) );
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "light.ambient"), 1,  glm::value_ptr( glm::vec3(0.2f, 0.2f, 0.2f) ) );
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "light.diffuse"), 1, glm::value_ptr( glm::vec3(0.5f, 0.5f, 0.5f) ) );
+		glUniform3fv( glGetUniformLocation(cubeShader.Program, "light.specular"), 1, glm::value_ptr( glm::vec3(1.0f, 1.0f, 1.0f) ) );
+
 		glUniform3fv( glGetUniformLocation(cubeShader.Program, "viewPos"), 1, glm::value_ptr( camera.Position ) );
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
