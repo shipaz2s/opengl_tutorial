@@ -1,5 +1,7 @@
 #include "shader.hpp"
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -72,4 +74,29 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath)
 void Shader::use()
 {
 	glUseProgram(this->Program);
+}
+
+void Shader::setVec3(const char* name, GLfloat v1, GLfloat v2, GLfloat v3)
+{
+	glUniform3fv( glGetUniformLocation(Program, name), 1, glm::value_ptr( glm::vec3(v1, v2, v3) ) );
+}
+
+void Shader::setVec3(const char* name, glm::vec3 value)
+{
+	glUniform3fv( glGetUniformLocation(Program, name), 1, glm::value_ptr( value ) );
+}
+
+void Shader::setFloat(const char* name, GLfloat value)
+{
+	glUniform1f( glGetUniformLocation(Program, name), value);
+}
+
+void Shader::setInt(const char* name, GLint value)
+{
+	glUniform1i( glGetUniformLocation(Program, name), value);
+}
+
+void Shader::setMat4(const char* name, glm::mat4 value)
+{
+	glUniformMatrix4fv( glGetUniformLocation(Program, name), 1, GL_FALSE, glm::value_ptr(value));
 }
