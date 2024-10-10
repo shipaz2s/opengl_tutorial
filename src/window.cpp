@@ -2,6 +2,9 @@
 #include <gl/glew.h>
 #include "window.hpp"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include <iostream>
 
 Camera camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -112,3 +115,52 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	camera.ProcessMouseScroll(static_cast<GLfloat>(yoffset));
 }
 
+GLuint readTextureJPG(const char * path) {
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	int texture_width, texture_height, texture_nrChannels;
+	stbi_set_flip_vertically_on_load(true);
+	stbi_uc* texture_data = stbi_load(path, &texture_width, &texture_height, &texture_nrChannels, 0);
+
+	if (texture_data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	} else {
+		std::cerr << "Failed to load texture file" << std::endl;
+	}
+	stbi_image_free(texture_data);
+
+	return texture;
+}
+
+GLuint readTexturePNG(const char * path) {
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	int texture_width, texture_height, texture_nrChannels;
+	stbi_set_flip_vertically_on_load(true);
+	stbi_uc* texture_data = stbi_load(path, &texture_width, &texture_height, &texture_nrChannels, 0);
+
+	if (texture_data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	} else {
+		std::cerr << "Failed to load texture file" << std::endl;
+	}
+	stbi_image_free(texture_data);
+
+	return texture;
+}

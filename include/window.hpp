@@ -24,3 +24,5 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 GLFWwindow* initWindow(int width, int height);
+GLuint readTextureJPG(const char *);
+GLuint readTexturePNG(const char *);
