@@ -149,6 +149,9 @@ int main()
 		glBindVertexArray(cubeVAO);
 		cubeShader.use();
 
+		cubeShader.setVec3("viewPos", camera.Position);
+        cubeShader.setFloat("material.shininess", 32.0f);
+
 		// directional light
 		cubeShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
 		cubeShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
@@ -207,13 +210,6 @@ int main()
 		// world transformation
 		glm::mat4 model = glm::mat4(1.0f);
 		cubeShader.setMat4("model", model);
-
-		// bind diffuse map
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuseMap);
-		// bind specular map
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		// render containers
 		glBindVertexArray(cubeVAO);
